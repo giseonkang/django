@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+
+
+{% block content %}
+    <!-- Bootstrap cdn 설정 -->
+    <div id="demo" class="carousel slide" data-ride="carousel" style="max-width:72%; width:auto; margin: 100px;">
+
+  <!-- Indicators -->
+  <ul class="carousel-indicators">
+    <li data-target="#demo" data-slide-to="0" class="active"></li>
+    <li data-target="#demo" data-slide-to="1"></li>
+    <li data-target="#demo" data-slide-to="2"></li>
+  </ul>
+
+  <!-- The slideshow -->
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+        <img src="/static/images/banner.png" alt='1'style="width:100%">
+        <div class="carousel-caption" style="color:black;">
+            <h3 style=" Font-size:50px;">
+                <strong></strong>
+            </h3>
+            <p></p>
+        </div>
+    </div>
+
+  {% for goods in object_list %}
+    <div class="carousel-item">
+        <img src="{{goods.thumbnail.url}}" alt="{{goods.name}}" style="width:100%">
+        <div class="carousel-caption" style="color:black;">
+            <h3 style=" Font-size:50px;">
+                <strong>{{goods}}</strong>
+            </h3>
+            <p>{{goods.price}}원</p>
+        </div>
+    </div>
+  {% endfor %}
+    {% comment %}
+
+    <div class="carousel-item">
+        <img src="/static/images/009.jpg" alt="003" style="width:100%">
+        <div class="carousel-caption" style="color:black;">
+            <h3 style=" Font-size:50px;">
+                <strong>3rd</strong>
+            </h3>
+            <p>{{goods}}</p>
+        </div>
+    </div> {% endcomment %}
+
+  </div>
+
+  <!-- Left and right controls -->
+  <a class="carousel-control-prev" href="#demo" data-slide="prev">
+    <span class="carousel-control-prev-icon"></span>
+  </a>
+  <a class="carousel-control-next" href="#demo" data-slide="next">
+    <span class="carousel-control-next-icon"></span>
+  </a>
+
+</div>
+
+
+
+<div class="flex-container" style="display: flex; flex-wrap: wrap;">
+   
+       
+        {% for goods in object_list %}
+    <div class="main_goods_image" style="background-color:#f1f1f1; max-width:25%; margin: 10px; text-align: center;">
+        <div class="img_info_1">
+            <a href="{%url 'goods:detail' goods.id%}" class="img_link">
+                <img class="goods_img" src="{{ goods.thumbnail.url }}" style="max-width:100%; height:auto;" alt="1st_goods image" />
+            </a>
+        </div>  
+
+        <div class="goods_name" style="line-height:40px;">
+            <a href="{%url 'goods:detail' goods.id%}" class="name_link" style="font-size:20px;">
+                <strong>
+                    {{goods}}
+                </strong>
+            </a>
+            <p style="line-height:10px;">
+               {{goods.price}} 원
+            </p>
+        </div>
+    </div>
+        {% endfor %}
+</div>
+  {% if user.is_staff %}
+             <div class="text-right mr-3">
+                <a href="{%url 'goods:add' %}" class="btn btn-primary btn-sm"><i class="fas fa-pencil-alt"></i>상품등록</a>
+            </div>
+    {% endif %}
+    <br>
+{% endblock %}

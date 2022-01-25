@@ -1,0 +1,37 @@
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+        {% comment %} <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+            </li>
+        </ul> {% endcomment %}
+    </div>
+    <div class="mx-auto order-0">
+        <a class="navbar-brand mx-auto mx-right-" href="{%url 'home' %}">
+            <img src="/static/images/logo.png" width="125" height="40">
+        </a>
+    </div>
+    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+        <ul class="navbar-nav ml-auto">
+            {% if user.is_active %}
+            <li class="nav-item d-none d-sm-inline-block">
+                <a class="nav-link" href="{% url 'password_change' %}">
+                    <i class="fas fa-user"></i> {{user.username}}</a>
+            </li>
+            <li class="nav-item d-none d-sm-inline-block">
+                <a class="nav-link" href="{% url 'logout' %}">
+                    <i class="fas fa-sign-out-alt"></i> 로그아웃</a>
+            </li>
+            {% else %}
+            <li class="nav-item d-none d-sm-inline-block" style="display:inline-block">
+                <a class="nav-link" href="{% url 'login' %}">
+                    <i class="fas fa-sign-in-alt"></i> 로그인</a>
+            </li>
+            <li class="nav-item d-none d-sm-inline-block" style="display:inline-block">
+                <a class="nav-link" href="{% url 'accounts:register' %}">
+                    <i class="fas fa-user-plus"></i> 회원가입</a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>

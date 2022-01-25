@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+
+{% block content-header %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+{% endblock content-header %}
+
+{% block content %}
+<div>
+    <div class="order_info">
+        <div class="order_header">
+            <h3 class="order_h3">주문/결제</h3>
+        </div>
+        <br>
+        <div class="recipient_info">
+            <h2 class="reci_h2">정보</h2>
+            <form action="{%url 'order:order_approve' %}" method="post" class="form col-sm-6 mx-auto was-validated" >
+                {% csrf_token %}
+                {% bootstrap_form form %}
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="remember" required> 위 주문 내용을 확인 하였으며, 결제에 동의합니다.
+                    <div class="valid-feedback">동의함</div>
+                    <div class="invalid-feedback">계속하려면 동의하세요</div>
+                </label>
+            </div>
+    
+                <button type="submit" class="btn btn-primary">결제하기</button>
+            </form>
+    </div>
+</div>
+
+
+    <div>
+        <h4>무통장입금(가상계좌)</h4>
+        <ul>
+            <li>
+                <label>입금은행</label>
+                <div>
+                    <select>
+                        <option>선택</option>
+                        <option>농협은행</option>
+                        <option>국민은행</option>
+                        <option>신한은행</option>
+                        <option>우리은행</option>
+                        <option>하나은행</option>
+                        <option>기업은행</option>
+                    </select>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+{% endblock %}

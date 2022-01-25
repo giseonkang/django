@@ -1,0 +1,218 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+
+<body onload="init();">
+<script language="JavaScript">
+var sell_price;
+var amount;
+
+function init () {
+	sell_price = document.form.sell_price.value;
+	amount = document.form.amount.value;
+	document.form.sum.value = sell_price;
+	change();
+}
+
+function add () {
+	hm = document.form.amount;
+	sum = document.form.sum;
+	hm.value ++ ;
+
+	sum.value = parseInt(hm.value) * sell_price;
+}
+
+function del () {
+	hm = document.form.amount;
+	sum = document.form.sum;
+		if (hm.value > 1) {
+			hm.value -- ;
+			sum.value = parseInt(hm.value) * sell_price;
+		}
+}
+
+function change () {
+	hm = document.form.amount;
+	sum = document.form.sum;
+
+		if (hm.value < 0) {
+			hm.value = 0;
+		}
+	sum.value = parseInt(hm.value) * sell_price;
+}  
+</script>
+
+{% block content-header %}
+
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col">
+        <img src='{{goods.thumbnail.url}}' width="600" height="600"/>
+    </div>
+    
+    <div>
+        <div class="col">
+            <font size="6em">{{goods}}</p></font>  
+        </div>
+        <hr style="border: double 5px;">
+        <div>
+            <span style="color:gray;"><i class="fas fa-bell"></i><h4>
+        <div>
+            <span style="color:red;"> <font size="5em">{{goods.price}}원</font></span>
+        </div>
+        <hr>
+        <div>
+            <font size="4em" color="gray">색상: </font><font size="4em" color="black">블랙</font>
+        </div>
+        <hr>
+        <div>
+            <font size="5em">무료 배송</font>
+        </div>
+        <hr>
+        <div>
+            <form name="form" method="get">
+            수량 : <input type=hidden name="sell_price" value="26930">
+            <input type="text" name="amount" value="1" size="3" onchange="change();">
+            <input type="button" value=" + " onclick="add();"><input type="button" value=" - " onclick="del();"><br>
+
+            금액 : <input type="text" name="sum" size="11" readonly> 원
+            </form>
+        </div>
+        <hr>
+        <!-- 구매페이지 이동 경로 설정-->
+        <div>
+            <a class="btn btn-success btn-lg" href="{%url 'order:order' goods.id%}" role="button">바로 구매</a>
+        </div>
+        <hr>
+    </div>
+    
+</div>
+
+
+
+
+ 
+ <div>
+   <div class="container">
+        <h2><b>※ 필수 표기정보</b></h2>
+        <table class="table table-bordered table">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">품명 및 모델명</th>
+                    <th scope="col">[로지텍] G102 2세대 LIGHTSYNC</th>
+                    <th scope="col">KC 인증 필 유무</th>
+                    <th scope="col">R-R-DZL-MU0054</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">정격전압, 소비전력</th>
+                    <td>알 수 없음(업체미제공)</td>
+                    <td>에너지소비효율등급</td>
+                    <td>해당없음</td>
+                </tr>
+                <tr>
+                    <th scope="row">출시년월</th>
+                    <td>2020.07</td>
+                    <td>제조자(수입자)</td>
+                    <td>Logitech Technology Co.,Ltd. /</td>
+                </tr>
+                <tr>
+                    <th scope="row">제조국</th>
+                    <td>중국</td>
+                    <td>크기</td>
+                    <td>컨텐츠참조</td>
+                </tr>
+                <tr>
+                    <th scope="row">무게</th>
+                    <td>컨텐츠참조</td>
+                    <td>주요사항</td>
+                    <td>컨텐츠참조</td>
+                </tr>
+                <tr>
+                    <th scope="row">품질보증기준</th>
+                    <td>제품 이상 시 공정거래위원회 고시 소비자 분쟁해결기준에 의거 보상합니다.</td>
+                    <td>A/S 책임자와 전화번호</td>
+                    <td>1577-7011</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+    <div>
+        <p style="text-align:center;">
+        {{goods.goods_content | safe}}
+        </p>
+    </div>  
+</div>
+<div>
+{% if user.is_staff %}
+    <a class="btn btn-primary" href="{%url 'goods:update' goods.id%}" role="button">상품수정</a>
+    <a class="btn btn-danger" href="{%url 'goods:delete' goods.id%}" role="button">상품삭제</a>
+{% endif %}
+
+</div>
+<table class="table table-success">
+    <thead>
+        <tr>
+            <th scope="col">상품 후기</th>
+        </tr>
+    </thead>
+
+<div class="container">
+    <table class="table table-hover">
+    <thead>
+    <tr>
+        <th>작성자</th>
+        <th>내용</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for review in reviews %}
+    <tr>
+        <td>{{review.writer}}</td>
+        <td>{{review.content}}</td>
+        {% if user.is_active %}
+            <td><a class="btn btn-danger" href="{%url 'goods:review_delete' review.id%}" role="button">삭제</a></td>
+        {% endif %}
+        
+    </tr>
+    {% endfor %}
+    {% comment %} <tr>
+        <td>2</td>
+        <td>안 좋아요 ^^</td>
+        <td>아라</td>
+        <td>2021.08.09</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>3</td>
+        <td>@@@@@@♚멀티캠퍼스☆♚♚신청시$$전원 전용강좌☜☜100%증정※@@@@@@@</td>
+        <td>선미</td>
+        <td>2021.08.09</td>
+        <td>1</td>
+    </tr>
+    <tr>
+        <td>4</td>
+        <td>여기 좀 이상한거 같애오...</td>
+        <td>기선</td>
+        <td>2021.08.09</td>
+        <td>6</td>
+    </tr>
+    {% endcomment %}
+     </tbody> 
+    </table>
+    <hr/> 
+</div>
+    <form action="{%url 'goods:review_add' goods.id%}" method="post" class="form col-sm-6 mx-auto" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        <button type="submit" class="btn btn-primary">
+            <i class="fas fa-check">후기 작성</i> 
+        </button>
+    </form>
+
+{% endblock %}
+
